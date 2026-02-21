@@ -1,0 +1,22 @@
+{
+  "milk": [
+      { "brand": "BrandA Milk", "price": 2.50 },
+      { "brand": "BrandB Milk", "price": 2.80 },
+      { "brand": "BrandC Organic Milk", "price": 3.00 }
+  ],
+  "bread": [
+      { "brand": "BrandA Bread", "price": 1.80 },
+      { "brand": "BrandB Whole Wheat", "price": 2.00 },
+      { "brand": "BrandC Sourdough", "price": 2.50 }
+  ],
+  "meat": [
+      { "brand": "BrandA Chicken", "price": 5.50 },
+      { "brand": "BrandB Beef", "price": 6.00 },
+      { "brand": "BrandC Pork", "price": 5.80 }
+  ],
+  "cereal": [
+      { "brand": "BrandA Cereal", "price": 3.00 },
+      { "brand": "BrandB Oats", "price": 2.70 },
+      { "brand": "BrandC Granola", "price": 3.20 }
+  ]
+}
