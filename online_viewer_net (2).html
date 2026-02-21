@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finini Grocery Receipt Generator</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        h1, h2 {
+            color: lightgreen;
+        }
+        h3 {
+            color: lightblue;
+        }
+        .item {
+            margin: 10px 0;
+        }
+        .checkout-btn {
+            background-color: lightblue;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .checkout-btn:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #qrcode {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Finini Grocery Store</h1>
+    <h2>Get Your Groceries Automatically</h2>
+
+    <p>Click below to receive your groceries, and a receipt will be generated:</p>
+
+    <button class="checkout-btn" onclick="generateReceipt()">Get My Groceries</button>
+
+    <h3 id="qrCodeHeader" style="display:none;">SCAN THIS RECEIPT AT A LOCAL GROCERY STORE!</h3>
+    <div id="selectedItems"></div>
+    <div id="qrcode"></div>
+
+    <!-- QR Code Generator Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+
+    <script>
+        // Define the grocery list with prices and brands
+        const groceryList = [
+            { name: 'Milk', brand: 'BrandA', price: 2.50 },
+            { name: 'Bread', brand: 'BrandB', price: 1.80 },
+            { name: 'Juice', brand: 'BrandC', price: 3.00 },
+            { name: 'Chicken', brand: 'BrandD', price: 5.50 },
+            { name: 'Eggs', brand: 'BrandE', price: 2.00 },
+            { name: 'Potatoes', brand: 'BrandF', price: 2.20 },
+            { name: 'Rice', brand: 'BrandG', price: 4.00 },
+            { name: 'Cheese', brand: 'BrandH', price: 3.50 },
+            { name: 'Apples', brand: 'BrandI', price: 2.00 },
+            { name: 'Oranges', brand: 'BrandJ', price: 2.40 }
+        ];
+
+        // Function to randomly select a few groceries
+        function getRandomGroceries() {
+            let selectedGroceries = [];
+            let numItems = Math.floor(Math.random() * 5) + 3; // Select between 3 to 7 items randomly
+
+            for (let i = 0; i < numItems; i++) {
+                const randomIndex = Math.floor(Math.random() * groceryList.length);
+                selectedGroceries.push(groceryList[randomIndex]);
+            }
+
+            return selectedGroceries;
+        }
+
+        // Function to generate the grocery receipt and QR code
+        function generateReceipt() {
+            // Generate a random selection of groceries
+            const selectedGroceries = getRandomGroceries();
+
+            // Display selected groceries and total
+            let total = 0;
+            let receiptContent = '<h2>Your Selected Groceries:</h2><ul>';
+
+            selectedGroceries.forEach(item => {
+                receiptContent += `<li>${item.name} (${item.brand}) - $${item.price.toFixed(2)}</li>`;
+                total += item.price;
+            });
+
+            receiptContent += `</ul><h3>Total: $${total.toFixed(2)}</h3>`;
+            document.getElementById('selectedItems').innerHTML = receiptContent;
+
+            // Generate a unique QR code for this receipt
+            const receiptData = {
+                items: selectedGroceries.map(item => `${item.name} (${item.brand}) - $${item.price.toFixed(2)}`).join(', '),
+                total: total.toFixed(2),
+                receiptId: 'Finini-' + Math.floor(Math.random() * 1000000)
+            };
+
+            const qrCodeData = `Receipt ID: ${receiptData.receiptId}\nItems: ${receiptData.items}\nTotal: $${receiptData.total}`;
+
+            // Show QR code header and generate QR code
+            document.getElementById('qrCodeHeader').style.display = 'block';
+            QRCode.toCanvas(document.getElementById('qrcode'), qrCodeData, function (error) {
+                if (error) console.error(error);
+                console.log('QR code generated!');
+            });
+
+            // Display the QR code container
+            document.getElementById('qrcode').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
